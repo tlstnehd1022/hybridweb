@@ -5,15 +5,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.Toast;
 
-public class HybridWebActivity extends Activity {
+public class HybridWebActivity extends Activity implements OnClickListener{
 
+	Button btnWeb80;
+	Button btnWeb8080;
+	
 	WebView myweb;
 	
 	
@@ -22,10 +28,17 @@ public class HybridWebActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hybrid_web);
 		
+		btnWeb80 = (Button) findViewById(R.id.btnWeb80);
+		btnWeb8080 = (Button) findViewById(R.id.btnWeb8080);
+		
+		btnWeb80.setOnClickListener(this);
+		btnWeb8080.setOnClickListener(this);
+		
 		myweb = (WebView) findViewById(R.id.myweb);
 		
 		WebSettings settings = myweb.getSettings();
 		settings.setJavaScriptEnabled(true);
+		settings.setBuiltInZoomControls(true);
 		
 		myweb.addJavascriptInterface(new MyJavascriptInterface(), "android");
 		// 자바스크립트에서 자바를 호출하려고 android.~~ 으로 사용할거임
@@ -34,7 +47,7 @@ public class HybridWebActivity extends Activity {
 		myweb.setWebChromeClient(new WebChromeClient());
 		// 웹브라우저에서 alert 을 쓰기위해서
 	
-		myweb.loadUrl("http://192.168.10.10:8082/web/index.jsp");
+		myweb.loadUrl("http://www.soen.kr");
 		//myweb.loadUrl("http://192.168.10.10");
 		
 	}
@@ -78,5 +91,26 @@ public class HybridWebActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	
+	public void onClick(View v) {
+	
+		switch (v.getId()) {
+		case R.id.btnWeb80:
+			myweb.loadUrl("http://192.168.10.10");
+			
+			break;
+			
+		case R.id.btnWeb8080:
+			myweb.loadUrl("http://192.168.10.10:8082/web");
+			break;
+			
+		default:
+			break;
+		
+		
+		}
+		
 	}
 }
